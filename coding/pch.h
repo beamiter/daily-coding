@@ -28,7 +28,27 @@ struct ListNil
 	}
 };
 
-void nil_insert(ListNil* l, Node* x);
+
+struct TreeNode
+{
+	TreeNode* p;
+	TreeNode* left;
+	TreeNode* right;
+	int key;
+	TreeNode(int a): key(a), p(NULL), left(NULL), right(NULL) {}
+};
+
+struct BSTree
+{
+	TreeNode* root;
+	BSTree() {
+		root = NULL;
+	}
+};
+
+
 void nil_test();
+
+void tree_test();
 
 #endif //PCH_H
