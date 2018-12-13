@@ -7,7 +7,7 @@ int main()
 {
     std::cout << "Hello World!\n"; 
 
-	tree_test();
+	//tree_test();
 	graph_test();
 
 	getchar();

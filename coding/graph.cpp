@@ -1,24 +1,114 @@
 #include "pch.h"
 
 
-void BFS(GraphNode* graph) {
+void BFS(GraphNode* graph, VertexNode* s) {
 	if (!graph || graph->vertexs.empty()) {
 		return;
 	}
-	auto s = graph->vertexs.front();
+	if (s == NULL) {
+		s = graph->vertexs.front();
+	}
+
 	queue<VertexNode*> vertex_queue;
 	vertex_queue.emplace(s);
+	s->visited = true;
+	s->p = NULL;
 	while (!vertex_queue.empty()) {
 		auto head = vertex_queue.front();
 		vertex_queue.pop();
-		cout << head->data << endl;
-		head->visited = true;
+		cout << "---> " << head->data << endl;
+		cout << "-------- " << head->data << endl;
 		for (auto adj : head->adj) {
 			if (!adj->visited) {
-				vertex_queue.push(adj);
+				vertex_queue.emplace(adj);
+				adj->visited = true;
+				adj->p = head;
+				cout << "<--- " << adj->data << endl;
+			}
+		}
+		/*cout << "##################" << endl;*/
+	}
+	return;
+}
+
+void BFS_search(GraphNode* graph, int key, VertexNode* s){
+	if (!graph || graph->vertexs.empty()) {
+		return;
+	}
+	if (s == NULL) {
+		s = graph->vertexs.front();
+	}
+
+	queue<VertexNode*> vertex_queue;
+	vertex_queue.emplace(s);
+	s->visited = true;
+	s->p = NULL;
+	VertexNode* answer = NULL;
+	while (!vertex_queue.empty()){
+		auto head = vertex_queue.front();
+		vertex_queue.pop();
+		if (head->data == key) {
+			answer = head;
+			break;
+		}
+		for (auto adj : head->adj) {
+			if (!adj->visited) {
+				vertex_queue.emplace(adj);
+				adj->visited = true;
+				adj->p = head;
 			}
 		}
 	}
+
+	while (answer) {
+		cout << answer->data << "  ";
+		answer = answer->p;
+		if (answer == s) {
+			cout << answer->data << "  ";
+			break;
+		}
+	}
+	cout << endl;
+
+	return;
+}
+
+void BFS_search(GraphNode graph, int key, VertexNode s) {
+	if (graph.vertexs.empty()) {
+		return;
+	}
+
+	queue<VertexNode> vertex_queue;
+	vertex_queue.emplace(s);
+	s.visited = true;
+	s.p = NULL;
+	VertexNode answer;
+	while (!vertex_queue.empty()) {
+		auto head = vertex_queue.front();
+		vertex_queue.pop();
+		if (head.data == key) {
+			answer = head;
+			break;
+		}
+		for (auto adj : head.adj) {
+			if (!adj->visited) {
+				vertex_queue.emplace(*adj);
+				adj->visited = true;
+				adj->p = &head;
+			}
+		}
+	}
+
+	while (answer) {
+		cout << answer->data << "  ";
+		answer = answer->p;
+		if (answer == &s) {
+			cout << answer->data << "  ";
+			break;
+		}
+	}
+	cout << endl;
+
 	return;
 }
 
@@ -46,6 +136,7 @@ void graph_test() {
 	v6->adj.push_back(v4);
 	v6->adj.push_back(v5);
 	v6->adj.push_back(v7);
+	v6->adj.push_back(v8);
 	v7->adj.push_back(v5);
 	v7->adj.push_back(v6);
 	v7->adj.push_back(v8);
@@ -61,5 +152,14 @@ void graph_test() {
 	graph_node->vertexs.push_back(v7);
 	graph_node->vertexs.push_back(v8);
 
-	BFS(graph_node);
+	//BFS(graph_node, v3);
+	BFS_search(*graph_node, 5, *v1);
+	BFS_search(graph_node, 5, v2);
+	BFS_search(graph_node, 5, v3);
+	BFS_search(graph_node, 5, v4);
+	BFS_search(graph_node, 5, v5);
+	BFS_search(graph_node, 5, v6);
+	BFS_search(graph_node, 5, v7);
+	BFS_search(graph_node, 5, v8);
+	
 }

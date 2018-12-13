@@ -19,6 +19,7 @@ struct VertexNode
 	VertexNode(int x):visited(false), d(0), data(x), p(NULL){
 		adj.clear();
 	}
+	VertexNode():visited(false), d(0), data(0), p(NULL){}
 };
 
 struct GraphNode
@@ -29,7 +30,10 @@ struct GraphNode
 	}
 };
 
-void BFS(GraphNode* graph);
+void BFS(GraphNode* graph, VertexNode* s = NULL);
+void BFS_search(GraphNode* graph, int key, VertexNode* s = NULL);
+
+void BFS_search(GraphNode graph, int key, VertexNode s);
 
 
 void graph_test();
