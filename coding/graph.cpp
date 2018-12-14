@@ -8,6 +8,7 @@ void BFS(GraphNode* graph, VertexNode* s) {
 	if (s == NULL) {
 		s = graph->vertexs.front();
 	}
+	reset_graph(graph);
 
 	queue<VertexNode*> vertex_queue;
 	vertex_queue.emplace(s);
@@ -16,20 +17,54 @@ void BFS(GraphNode* graph, VertexNode* s) {
 	while (!vertex_queue.empty()) {
 		auto head = vertex_queue.front();
 		vertex_queue.pop();
-		cout << "---> " << head->data << endl;
-		cout << "-------- " << head->data << endl;
+		//cout << "---> " << head->data << endl;
+		//cout << "-------- " << head->data << endl;
+		cout << head->data << "  ";
 		for (auto adj : head->adj) {
 			if (!adj->visited) {
 				vertex_queue.emplace(adj);
 				adj->visited = true;
 				adj->p = head;
-				cout << "<--- " << adj->data << endl;
+				//cout << "<--- " << adj->data << endl;
 			}
 		}
-		/*cout << "##################" << endl;*/
+		cout << endl;
 	}
 	return;
 }
+
+void DFS(GraphNode* graph, VertexNode* s) {
+	if (!graph || graph->vertexs.empty()) {
+		return;
+	}
+	if (s == NULL) {
+		s = graph->vertexs.front();
+	}
+	reset_graph(graph);
+
+	deque<VertexNode*> vertex_queue;
+	vertex_queue.emplace_back(s);
+	s->visited = true;
+	s->p = NULL;
+	while (!vertex_queue.empty()) {
+		auto head = vertex_queue.back();
+		vertex_queue.pop_back();
+		//cout << "---> " << head->data << endl;
+		//cout << "-------- " << head->data << endl;
+		cout << head->data << "  ";
+		for (auto adj : head->adj) {
+			if (!adj->visited) {
+				vertex_queue.emplace_back(adj);
+				adj->visited = true;
+				adj->p = head;
+				//cout << "<--- " << adj->data << endl;
+			}
+		}
+		cout << endl;
+	}
+	return;
+}
+
 
 void BFS_search(GraphNode* graph, int key, VertexNode* s){
 	if (!graph || graph->vertexs.empty()) {
@@ -38,6 +73,7 @@ void BFS_search(GraphNode* graph, int key, VertexNode* s){
 	if (s == NULL) {
 		s = graph->vertexs.front();
 	}
+	reset_graph(graph);
 
 	queue<VertexNode*> vertex_queue;
 	vertex_queue.emplace(s);
@@ -73,28 +109,32 @@ void BFS_search(GraphNode* graph, int key, VertexNode* s){
 	return;
 }
 
-void BFS_search(GraphNode graph, int key, VertexNode s) {
-	if (graph.vertexs.empty()) {
+void DFS_search(GraphNode* graph, int key, VertexNode* s) {
+	if (!graph || graph->vertexs.empty()) {
 		return;
 	}
+	if (s == NULL) {
+		s = graph->vertexs.front();
+	}
+	reset_graph(graph);
 
-	queue<VertexNode> vertex_queue;
-	vertex_queue.emplace(s);
-	s.visited = true;
-	s.p = NULL;
-	VertexNode answer;
+	deque<VertexNode*> vertex_queue;
+	vertex_queue.emplace_back(s);
+	s->visited = true;
+	s->p = NULL;
+	VertexNode* answer = NULL;
 	while (!vertex_queue.empty()) {
-		auto head = vertex_queue.front();
-		vertex_queue.pop();
-		if (head.data == key) {
+		auto head = vertex_queue.back();
+		vertex_queue.pop_back();
+		if (head->data == key) {
 			answer = head;
 			break;
 		}
-		for (auto adj : head.adj) {
+		for (auto adj : head->adj) {
 			if (!adj->visited) {
-				vertex_queue.emplace(*adj);
+				vertex_queue.emplace_back(adj);
 				adj->visited = true;
-				adj->p = &head;
+				adj->p = head;
 			}
 		}
 	}
@@ -102,13 +142,24 @@ void BFS_search(GraphNode graph, int key, VertexNode s) {
 	while (answer) {
 		cout << answer->data << "  ";
 		answer = answer->p;
-		if (answer == &s) {
+		if (answer == s) {
 			cout << answer->data << "  ";
 			break;
 		}
 	}
 	cout << endl;
 
+	return;
+}
+
+void reset_graph(GraphNode* graph)
+{
+	if (!graph) {
+		return;
+	}
+	for (auto a : graph->vertexs) {
+		a->visited = false;
+	}
 	return;
 }
 
@@ -152,14 +203,16 @@ void graph_test() {
 	graph_node->vertexs.push_back(v7);
 	graph_node->vertexs.push_back(v8);
 
-	//BFS(graph_node, v3);
-	BFS_search(*graph_node, 5, *v1);
-	BFS_search(graph_node, 5, v2);
-	BFS_search(graph_node, 5, v3);
-	BFS_search(graph_node, 5, v4);
-	BFS_search(graph_node, 5, v5);
-	BFS_search(graph_node, 5, v6);
-	BFS_search(graph_node, 5, v7);
-	BFS_search(graph_node, 5, v8);
+	
+	for (auto a : graph_node->vertexs) {
+		//BFS(graph_node, a);
+		//cout << "@@@@ BFS @@@@" << endl;
+		BFS_search(graph_node, 2, a);
+		cout << "@@@@ BFS SEARCH @@@@" << endl;
+		//DFS(graph_node, a);
+		//cout << "@@@@ DFS @@@@" << endl;
+		DFS_search(graph_node, 2, a);
+		cout << "@@@@ DFS SEARCH @@@@" << endl;
+	}
 	
 }

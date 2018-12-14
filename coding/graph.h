@@ -4,6 +4,7 @@
 #include<vector>
 #include<queue>
 #include<memory>
+#include<deque>
 
 using namespace std;
 
@@ -33,7 +34,10 @@ struct GraphNode
 void BFS(GraphNode* graph, VertexNode* s = NULL);
 void BFS_search(GraphNode* graph, int key, VertexNode* s = NULL);
 
-void BFS_search(GraphNode graph, int key, VertexNode s);
+void DFS(GraphNode* graph, VertexNode* s = NULL);
+void DFS_search(GraphNode* graph, int key, VertexNode* s = NULL);
+
+void reset_graph(GraphNode* graph);
 
 
 void graph_test();
